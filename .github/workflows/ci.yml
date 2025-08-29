@@ -12,11 +12,11 @@ jobs:
       - name: Make scripts executable
         run: chmod +x *.sh
 
-      - name: Setup DB
+      - name: Setup Database
         run: ./setup_db.sh
 
-      - name: Run test_count
+      - name: Test: count users
         run: ./test_count.sh
 
-      - name: Run test_value
+      - name: Test: check user 1 name
         run: ./test_value.sh
