@@ -1,6 +1,12 @@
 name: DB Tests
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
 
 jobs:
   test:
@@ -15,8 +21,8 @@ jobs:
       - name: Setup Database
         run: ./setup_db.sh
 
-      - name: Test: count users
+      - name: "Test: count users"
         run: ./test_count.sh
 
-      - name: Test: check user 1 name
+      - name: "Test: check user 1 name"
         run: ./test_value.sh
