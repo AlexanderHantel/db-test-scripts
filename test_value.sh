@@ -10,3 +10,4 @@ else
   echo "❌ TEST FAILED: expected 2 users, got $RESULT"
   exit 1
 fi
+
