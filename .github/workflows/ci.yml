@@ -1,0 +1,22 @@
+name: DB Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Make scripts executable
+        run: chmod +x *.sh
+
+      - name: Setup DB
+        run: ./setup_db.sh
+
+      - name: Run test_count
+        run: ./test_count.sh
+
+      - name: Run test_value
+        run: ./test_value.sh
