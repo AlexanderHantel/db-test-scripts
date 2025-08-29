@@ -9,19 +9,20 @@ on:
       - dev
 
 jobs:
-  test_count:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - run: chmod +x *.sh
-      - run: ./setup_db.sh
-      - run: ./test_count.sh
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-  test_value:
-    runs-on: ubuntu-latest
-    needs: test_count
-    steps:
-      - uses: actions/checkout@v3
-      - run: chmod +x *.sh
-      - run: ./setup_db.sh
-      - run: ./test_value.sh
+      - name: Make scripts executable
+        run: chmod +x *.sh
+
+      - name: Setup Database
+        run: ./setup_db.sh
+
+      - name: Test: count users
+        run: ./test_count.sh
+
+      - name: Test: check user 1 name
+        run: ./test_value.sh
