@@ -2,11 +2,11 @@
 set -e
 
 echo "Running test: count users"
-RESULT=$(sqlite3 test.db "SELECT COUNT(*) FROM users;")
-if [ "$RESULT" -eq 2 ]; then
-  echo "✅ TEST PASSED: found 2 users"
+RESULT=$(sqlite3 test.db "SELECT COUNT(*) FROM employees;")
+if [ "$count" -eq 4 ]; then
+  echo "OK: found 4 employees"
   exit 0
 else
-  echo "❌ TEST FAILED: expected 2 users, got $RESULT"
+  echo "FAIL: expected 4 employees, got $count"
   exit 1
 fi
