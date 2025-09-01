@@ -2,7 +2,7 @@
 set -e
 
 echo "Running test: emails unique"
-RESULT=$(sqlite3 test.db "SELECT email, COUNT(*) FROM employees GROUP BY email HAVING COUNT(*) > 1;")
+duplicates=$(sqlite3 test.db "SELECT email, COUNT(*) FROM employees GROUP BY email HAVING COUNT(*) > 1;")
 if [ -z "$duplicates" ]; then
   echo "OK: all emails unique"
   exit 0

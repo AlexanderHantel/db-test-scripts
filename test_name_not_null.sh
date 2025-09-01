@@ -2,7 +2,7 @@
 set -e
 
 echo "Running test: name not null"
-RESULT=$(sqlite3 test.db "SELECT COUNT(*) FROM employees WHERE name IS NULL;")
+nulls=$(sqlite3 test.db "SELECT COUNT(*) FROM employees WHERE name IS NULL;")
 if [ "$nulls" -eq 0 ]; then
   echo "OK: no null names"
   exit 0

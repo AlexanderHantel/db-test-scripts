@@ -2,7 +2,7 @@
 set -e
 
 echo "Running test: count users"
-RESULT=$(sqlite3 test.db "SELECT COUNT(*) FROM employees;")
+count=$(sqlite3 test.db "SELECT COUNT(*) FROM employees;")
 if [ "$count" -eq 4 ]; then
   echo "OK: found 4 employees"
   exit 0

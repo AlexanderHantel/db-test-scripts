@@ -2,7 +2,7 @@
 set -e
 
 echo "Running test: email format"
-RESULT=$(sqlite3 test.db "SELECT COUNT(*) FROM employees WHERE email NOT LIKE '%@%';")
+invalid=$(sqlite3 test.db "SELECT COUNT(*) FROM employees WHERE email NOT LIKE '%@%';")
 if [ "$invalid" -eq 0 ]; then
   echo "OK: all emails have @"
   exit 0
