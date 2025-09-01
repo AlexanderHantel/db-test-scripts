@@ -18,11 +18,26 @@ jobs:
       - run: ./setup_db.sh
       - run: ./test_count.sh
 
-  test_value:
+  test_email_format:
     runs-on: ubuntu-latest
-    needs: test_count
     steps:
       - uses: actions/checkout@v3
       - run: chmod +x *.sh
       - run: ./setup_db.sh
-      - run: ./test_value.sh
+      - run: ./test_email_format.sh
+
+  test_email_unique:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: chmod +x *.sh
+      - run: ./setup_db.sh
+      - run: ./test_email_unique.sh
+
+  test_name_not_null:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: chmod +x *.sh
+      - run: ./setup_db.sh
+      - run: ./test_name_not_null.sh
