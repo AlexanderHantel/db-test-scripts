@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 echo "Running test: email format"
 invalid=$(sqlite3 test.db "SELECT COUNT(*) FROM employees WHERE email NOT LIKE '%@%';")

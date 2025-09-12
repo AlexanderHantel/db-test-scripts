@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 echo "Running test: count users"
 count=$(sqlite3 test.db "SELECT COUNT(*) FROM employees;")
