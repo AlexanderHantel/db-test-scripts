@@ -17,6 +17,7 @@ jobs:
 
       - name: Run all shell tests
         run: |
+          set +e
           mkdir -p reports
           TESTCASES=""
           FAILURES=0
