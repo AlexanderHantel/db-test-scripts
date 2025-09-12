@@ -55,5 +55,5 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: junit-reports
+          name: db-test-scripts-report
           path: reports/shell-tests.xml
