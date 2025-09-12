@@ -60,5 +60,5 @@ jobs:
       - name: Upload test report
         uses: actions/upload-artifact@v4
         with:
-          name: junit-reports
+          name: junit-report-${{ matrix.script }}
           path: reports/*.xml
