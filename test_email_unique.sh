@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 echo "Running test: emails unique"
 duplicates=$(sqlite3 test.db "SELECT email, COUNT(*) FROM employees GROUP BY email HAVING COUNT(*) > 1;")

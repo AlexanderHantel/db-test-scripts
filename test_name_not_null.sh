@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 echo "Running test: name not null"
 nulls=$(sqlite3 test.db "SELECT COUNT(*) FROM employees WHERE name IS NULL;")

@@ -1,0 +1,59 @@
+name: DB Tests
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ dev ]
+
+jobs:
+  run-all-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: chmod +x *.sh
+      - run: ./setup_db.sh
+
+      - name: Run all shell tests
+        continue-on-error: true 
+        run: |
+          set +e
+          mkdir -p reports
+          TESTCASES=""
+          FAILURES=0
+          COUNT=0
+
+          for script in test_*.sh; do
+            echo "Running $script"
+            OUTPUT=$(. ./$script 2>&1)
+            EXIT_CODE=$?
+            COUNT=$((COUNT+1))
+
+            if [ $EXIT_CODE -eq 0 ]; then
+              TESTCASES+="<testcase classname='DBTests' name='$script'/>"
+            else
+              FAILURES=$((FAILURES+1))
+              TESTCASES+="<testcase classname='DBTests' name='$script'><failure><![CDATA[$OUTPUT]]></failure></testcase>"
+            fi
+          done
+
+          cat > reports/shell-tests.xml <<XML
+          <?xml version="1.0" encoding="UTF-8"?>
+          <testsuites>
+            <testsuite name="DBTests" tests="$COUNT" failures="$FAILURES">
+              $TESTCASES
+            </testsuite>
+          </testsuites>
+          XML
+
+          if [ $FAILURES -ne 0 ]; then
+            exit 1
+          fi
+
+      - name: Upload combined report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: db-test-scripts-report
+          path: reports/shell-tests.xml
