@@ -45,6 +45,10 @@ jobs:
           </testsuites>
           XML
 
+          if [ $FAILURES -ne 0 ]; then
+            exit 1
+          fi
+
       - name: Upload combined report
         uses: actions/upload-artifact@v4
         with:
