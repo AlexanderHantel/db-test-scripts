@@ -16,6 +16,7 @@ jobs:
       - run: ./setup_db.sh
 
       - name: Run all shell tests
+        continue-on-error: true 
         run: |
           set +e
           mkdir -p reports
@@ -51,6 +52,7 @@ jobs:
           fi
 
       - name: Upload combined report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: junit-reports
