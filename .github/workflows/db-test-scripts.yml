@@ -1,0 +1,64 @@
+name: DB Tests
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ dev ]
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        script: [ test_count.sh, test_email_format.sh, test_email_unique.sh, test_name_not_null.sh ]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Make scripts executable
+        run: chmod +x *.sh
+
+      - name: Setup DB
+        run: ./setup_db.sh
+
+      - name: Run test ${{ matrix.script }}
+        id: runtest
+        run: |
+          set +e
+          OUTPUT=$(.${{ matrix.script }} 2>&1)
+          EXIT_CODE=$?
+          echo "exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT
+          echo "output<<EOF" >> $GITHUB_OUTPUT
+          echo "$OUTPUT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create JUnit report
+        run: |
+          mkdir -p reports
+          EXIT_CODE=${{ steps.runtest.outputs.exit_code }}
+          OUTPUT="${{ steps.runtest.outputs.output }}"
+          FAILURES=0
+          FAILURE_BLOCK=""
+
+          if [ "$EXIT_CODE" -ne 0 ]; then
+            FAILURES=1
+            FAILURE_BLOCK="<failure message='Test failed'><![CDATA[$OUTPUT]]></failure>"
+          fi
+
+          cat > "reports/${{ matrix.script }}.xml" <<XML
+          <?xml version="1.0" encoding="UTF-8"?>
+          <testsuites>
+            <testsuite name="DBTests" tests="1" failures="$FAILURES">
+              <testcase classname="DBTests" name="${{ matrix.script }}">
+                $FAILURE_BLOCK
+              </testcase>
+            </testsuite>
+          </testsuites>
+          XML
+
+      - name: Upload test report
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-reports
+          path: reports/*.xml
