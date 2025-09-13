@@ -57,3 +57,15 @@ jobs:
         with:
           name: db-test-scripts-report
           path: reports/shell-tests.xml
+
+      - name: Check report for failures/errors
+        run: |
+          REPORT_FILE="reports/shell-tests.xml"
+          tests=$(grep -oP 'tests="\K\d+' "$REPORT_FILE" || echo 0)
+          failures=$(grep -oP 'failures="\K\d+' "$REPORT_FILE" || echo 0)
+          errors=$(grep -oP 'errors="\K\d+' "$REPORT_FILE" || echo 0)
+          echo "Found $tests tests, $failures failures, $errors errors"
+          if [ "$failures" -gt 0 ] || [ "$errors" -gt 0 ]; then
+            echo "❌ Tests failed — marking workflow as failed"
+            exit 1
+          fi
