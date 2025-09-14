@@ -9,6 +9,10 @@ On every push (or manual trigger), GitHub Actions runs a series of scripts that:
 
 The goal is to provide a simple yet extensible foundation for database testing pipelines.
 
+> **Note**  
+> The following test failure is **intentionally introduced** to demonstrate that the orchestrator works correctly in both positive and negative scenarios:  
+> - `test_count.sh` — **FAIL**: expected 5 employees, got 4
+
 ---
 
 ## Features
